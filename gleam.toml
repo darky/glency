@@ -1,5 +1,5 @@
 name = "glency"
-version = "1.0.0"
+version = "1.0.1"
 description = "Tiny Gleam dependency injection. Make IO functions unit tests friendly."
 licences = ["MIT"]
 repository = { type = "github", user = "darky", repo = "glency" }
