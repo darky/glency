@@ -1,10 +1,11 @@
-import carpenter/table
+import carpenter/table.{type Set}
 import gleaf
 import gleam/dict
 import gleam/list
 import gluple/reflect
 
-pub fn init_di() {
+@external(javascript, "./glency_ffi.mjs", "stub")
+pub fn init_di() -> Set(a, b) {
   let assert Ok(set) =
     table.build("glency")
     |> table.privacy(table.Public)
@@ -17,7 +18,8 @@ pub fn init_di() {
   set
 }
 
-pub fn di(key: String, args, cb) {
+@external(javascript, "./glency_ffi.mjs", "di")
+pub fn di(key: String, args: args, cb: fn() -> resp) -> resp {
   let assert Ok(set) = table.ref("glency")
   case table.lookup(set, "glency") |> list.first {
     Ok(#(_, cache)) -> {
@@ -33,7 +35,8 @@ pub fn di(key: String, args, cb) {
   }
 }
 
-pub fn with_di(key: String, mock, cb) {
+@external(javascript, "./glency_ffi.mjs", "withDi")
+pub fn with_di(key: String, mock: mock, cb: fn() -> resp) -> Nil {
   let assert Ok(set) = table.ref("glency")
   case table.lookup(set, "glency") |> list.first {
     Ok(#(_, cache)) -> {

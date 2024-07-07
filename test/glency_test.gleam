@@ -20,10 +20,10 @@ pub fn with_di_test() {
 
 pub fn with_multiple_di_test() {
   use <- glency.with_di("increment", fn(n) { n + 2 })
-  use <- glency.with_di("decrement", fn(n, delta) { n - delta })
+  use <- glency.with_di("decrement", fn(n, _) { n - 3 })
   1
   |> increment
-  |> decrement(3)
+  |> decrement(1)
   |> should.equal(0)
 }
 
@@ -41,5 +41,5 @@ fn increment(n) {
 
 fn decrement(n, delta) {
   use <- glency.di("decrement", #(n, delta))
-  n - 1
+  n - delta
 }
