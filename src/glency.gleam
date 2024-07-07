@@ -1,11 +1,11 @@
-import carpenter/table.{type Set}
+import carpenter/table
 import gleaf
 import gleam/dict
 import gleam/list
 import gluple/reflect
 
 @external(javascript, "./glency_ffi.mjs", "stub")
-pub fn init_di() -> Set(a, b) {
+pub fn init_di() -> Nil {
   let assert Ok(set) =
     table.build("glency")
     |> table.privacy(table.Public)
@@ -14,22 +14,17 @@ pub fn init_di() -> Set(a, b) {
     |> table.decentralized_counters(True)
     |> table.compression(False)
     |> table.set
-
-  set
+  table.insert(set, [#("glency", dict.new())])
 }
 
 @external(javascript, "./glency_ffi.mjs", "di")
 pub fn di(key: String, args: tuple, cb: fn() -> resp) -> resp {
   let assert Ok(set) = table.ref("glency")
-  case table.lookup(set, "glency") |> list.first {
-    Ok(#(_, cache)) -> {
-      case dict.get(cache, key) {
-        Ok(cb) -> {
-          let assert Ok(args) = args |> reflect.tuple_to_list
-          args |> gleaf.apply(cb)
-        }
-        Error(Nil) -> cb()
-      }
+  let assert Ok(#(_, cache)) = table.lookup(set, "glency") |> list.first
+  case dict.get(cache, key) {
+    Ok(mock) -> {
+      let assert Ok(args) = args |> reflect.tuple_to_list
+      args |> gleaf.apply(mock)
     }
     Error(Nil) -> cb()
   }
@@ -38,18 +33,9 @@ pub fn di(key: String, args: tuple, cb: fn() -> resp) -> resp {
 @external(javascript, "./glency_ffi.mjs", "withDi")
 pub fn with_di(key: String, mock: mock, cb: fn() -> resp) -> Nil {
   let assert Ok(set) = table.ref("glency")
-  case table.lookup(set, "glency") |> list.first {
-    Ok(#(_, cache)) -> {
-      let cache = dict.insert(cache, key, mock)
-      table.insert(set, [#("glency", cache)])
-      set
-    }
-    Error(Nil) -> {
-      table.insert(set, [#("glency", dict.from_list([#(key, mock)]))])
-      set
-    }
-  }
-
+  let assert Ok(#(_, cache)) = table.lookup(set, "glency") |> list.first
+  let cache = dict.insert(cache, key, mock)
+  table.insert(set, [#("glency", cache)])
   cb()
-  table.delete_all(set)
+  table.insert(set, [#("glency", dict.new())])
 }
