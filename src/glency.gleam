@@ -19,7 +19,7 @@ pub fn init_di() -> Set(a, b) {
 }
 
 @external(javascript, "./glency_ffi.mjs", "di")
-pub fn di(key: String, args: args, cb: fn() -> resp) -> resp {
+pub fn di(key: String, args: tuple, cb: fn() -> resp) -> resp {
   let assert Ok(set) = table.ref("glency")
   case table.lookup(set, "glency") |> list.first {
     Ok(#(_, cache)) -> {
