@@ -13,14 +13,14 @@ pub fn without_di_test() {
 }
 
 pub fn with_di_test() {
-  use <- glency.with_di("increment", fn(n) { n + 2 })
+  use <- glency.with_di(increment, fn(n) { n + 2 })
   increment(1)
   |> should.equal(3)
 }
 
 pub fn with_multiple_di_test() {
-  use <- glency.with_di("increment", fn(n) { n + 2 })
-  use <- glency.with_di("decrement", fn(n, _) { n - 3 })
+  use <- glency.with_di(increment, fn(n) { n + 2 })
+  use <- glency.with_di(decrement, fn(n, _) { n - 3 })
   1
   |> increment
   |> decrement(1)
@@ -35,11 +35,11 @@ pub fn all_with_di_cleaned_test() {
 }
 
 fn increment(n) {
-  use <- glency.di("increment", #(n))
+  use <- glency.di(increment, #(n))
   n + 1
 }
 
 fn decrement(n, delta) {
-  use <- glency.di("decrement", #(n, delta))
+  use <- glency.di(decrement, #(n, delta))
   n - delta
 }

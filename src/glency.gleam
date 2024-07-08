@@ -18,7 +18,7 @@ pub fn init_di() -> Nil {
 }
 
 @external(javascript, "./glency_ffi.mjs", "di")
-pub fn di(key: String, args: tuple, cb: fn() -> resp) -> resp {
+pub fn di(key: fun, args: tuple, cb: fn() -> resp) -> resp {
   let assert Ok(set) = table.ref("glency")
   let assert Ok(#(_, cache)) = table.lookup(set, "glency") |> list.first
   case dict.get(cache, key) {
@@ -31,7 +31,7 @@ pub fn di(key: String, args: tuple, cb: fn() -> resp) -> resp {
 }
 
 @external(javascript, "./glency_ffi.mjs", "withDi")
-pub fn with_di(key: String, mock: mock, cb: fn() -> resp) -> Nil {
+pub fn with_di(key: mock, mock: mock, cb: fn() -> resp) -> Nil {
   let assert Ok(set) = table.ref("glency")
   let assert Ok(#(_, cache)) = table.lookup(set, "glency") |> list.first
   let cache = dict.insert(cache, key, mock)

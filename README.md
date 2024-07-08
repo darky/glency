@@ -21,13 +21,13 @@ pub fn main() {
 
   {
     // Mock implementation of `fetch_cat`
-    use <- glency.with_di("fetch_cat", fn(_cat_id) { Cat("Barsik", 7) })
+    use <- glency.with_di(fetch_cat, fn(_cat_id) { Cat("Barsik", 7) })
     fetch_cat(1) // will avoid IO, returns Barsik cat
   }
 }
 
 pub fn fetch_cat(cat_id: Int) {
-  use <- glency.di("fetch_cat", #(cat_id)) // Make IO function DI friendly
+  use <- glency.di(fetch_cat, #(cat_id)) // Make IO function DI friendly
   // Here production IO implementation of function
 }
 ```
