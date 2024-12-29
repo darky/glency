@@ -1,5 +1,7 @@
 # glency
 
+## Deprecated in favor [klubok-gleam](https://github.com/darky/klubok-gleam)
+
 [![Package Version](https://img.shields.io/hexpm/v/glency)](https://hex.pm/packages/glency)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/glency/)
 ![Erlang-compatible](https://img.shields.io/badge/target-erlang-a2003e)
